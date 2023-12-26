@@ -12,7 +12,8 @@ import java.util.Map;
  * @Date 2023-12-24
  **/
 @RestController
-public class ThreadLocalWrongController {
+public class
+ThreadLocalWrongController {
 
     private static final ThreadLocal<Integer> currentUser = ThreadLocal.withInitial(() -> null);
 
