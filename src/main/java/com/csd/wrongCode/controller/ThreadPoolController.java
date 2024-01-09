@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -36,7 +38,7 @@ public class ThreadPoolController {
         printStats(threadPool);
         for (int i = 0; i < 100000000; i++) {
             threadPool.execute(() -> {
-                String payload = IntStream.rangeClosed(1, 1000000)
+                String payload = IntStream.rangeClosed(1, 100000000)
                         .mapToObj(__ -> "a")
                         .collect(Collectors.joining("")) + UUID.randomUUID().toString();
                 try {
@@ -68,6 +70,21 @@ public class ThreadPoolController {
         }
         threadPool.shutdown();
         threadPool.awaitTermination(1, TimeUnit.HOURS);
+    }
+
+
+    private static List<List<Integer>> data = new ArrayList<>();
+
+    private static void oom() {
+        for (int i = 0; i < 100000; i++) {
+            List<Integer> rawList = IntStream.rangeClosed(1, 100000).boxed().collect(Collectors.toList());
+            data.add(rawList.subList(0, 1));
+        }
+    }
+
+    public static void main(String[] args) {
+        oom();
+        System.out.println("执行完成");
     }
 
 //    @GetMapping("right")
