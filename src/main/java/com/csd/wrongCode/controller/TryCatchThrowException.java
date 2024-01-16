@@ -16,7 +16,7 @@ public class TryCatchThrowException {
             try {
                 throw new RuntimeException("finally");
             } catch (Exception e) {
-                log.error("finally: ", e);
+                log.error("finally", e);
             }
         }
     }
